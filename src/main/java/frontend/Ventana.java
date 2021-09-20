@@ -5,7 +5,6 @@ import analizador.Buscador;
 import analizador.CargarArchivo;
 import java.io.File;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 public class Ventana extends javax.swing.JFrame {
 
@@ -191,7 +190,7 @@ public class Ventana extends javax.swing.JFrame {
 
     private void btnAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarActionPerformed
         btnVerTokens.setEnabled(false);
-        AutomataFinitoDeterminista afd = new AutomataFinitoDeterminista(taCodigoFuente.getText());
+        AutomataFinitoDeterminista afd = new AutomataFinitoDeterminista(taCodigoFuente);
         afd.analizar(taTransiciones);
         afd.mostrarErrores(taErrores);
         this.afd = afd;

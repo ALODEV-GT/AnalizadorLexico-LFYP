@@ -22,9 +22,10 @@ public class Buscador {
         highlighter.removeAllHighlights();
     }
 
-    public void buscarCoincidencias() throws IndexOutOfBoundsException{
+    public int buscarCoincidencias() throws IndexOutOfBoundsException {
         String codigoFuente = taCodigoFuente.getText();
         char caracter;
+        int numCoincidencias = 0;
 
         while (posicion < codigoFuente.length()) {
             caracter = codigoFuente.charAt(posicion);
@@ -40,11 +41,13 @@ public class Buscador {
 
                 if (contador == palabraClave.length()) {
                     pintarCoincidencia(posicion - palabraClave.length(), posicion);
+                    numCoincidencias++;
                 }
             } else {
                 posicion++;
             }
         }
+        return numCoincidencias;
     }
 
     private void pintarCoincidencia(int posInicial, int posFinal) {

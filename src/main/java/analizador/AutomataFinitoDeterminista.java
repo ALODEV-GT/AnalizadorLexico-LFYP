@@ -1,14 +1,24 @@
 package analizador;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JTextArea;
 
+/**
+ * Determina si los tokens son validoso o invalidos, agrupandolos y permitiendo
+ * mostrarlos en una interfaz grafica.
+ *
+ * @author midik
+ */
 public class AutomataFinitoDeterminista {
 
     private String codigoFuente;
+    private JTextArea taCodigoFuente;
     private int posicion = 0;
     private final ArrayList<Token> tokens = new ArrayList<>();
     private final ArrayList<Error> errores = new ArrayList<>();
+    private Set<String> tokenSinRepetir = new HashSet<>();
     private final int[][] matrizTransicion = new int[8][6];
     private int estadoActual = 0;
     private int numFilaE = 1;
@@ -132,8 +142,54 @@ public class AutomataFinitoDeterminista {
     //Letras a-z, A-Z   tipoCarater=1
     //punto                 tipoCaracter=2
 
-    public AutomataFinitoDeterminista(String codigoFuente) {
-        this.codigoFuente = codigoFuente;
+    public AutomataFinitoDeterminista(JTextArea taCodigoFuente) {
+        this.taCodigoFuente = taCodigoFuente;
+        this.codigoFuente = taCodigoFuente.getText();
+    }
+
+    /**
+     * Agrupa los tokens sin repetirlos.
+     */
+    private void getTokenSinRepetir() {
+        for (Token t : tokens) {
+            if (!t.getTipoToken().equals(TiposToken.ERROR)) {
+                tokenSinRepetir.add(t.getLexema());
+            }
+        }
+    }
+
+    /**
+     * Muestra en el JTextArea indicado, las veces que se repite un token.
+     *
+     * @param taNumVeces
+     */
+    public void imprimirContadorTokens(JTextArea taNumVeces) {
+        taNumVeces.setText("");
+        getTokenSinRepetir();
+
+        for (String s : tokenSinRepetir) {
+            int contador = 0;
+            for (int i = 0; i < tokens.size(); i++) {
+                if (s.equals(tokens.get(i).getLexema())) {
+                    contador++;
+                }
+            }
+            taNumVeces.append(s + "  ----> " + contador + getSingPluralr(contador) + "\n");
+        }
+    }
+
+    /**
+     * Devuelve una cadena para denotar singular (vez) o plural(veces)
+     *
+     * @param contador
+     * @return
+     */
+    public String getSingPluralr(int contador) {
+        String palabra = " veces.";
+        if (contador == 1) {
+            palabra = " vez.";
+        }
+        return palabra;
     }
 
     public void analizar(JTextArea taTransiciones) {
@@ -143,6 +199,11 @@ public class AutomataFinitoDeterminista {
         }
     }
 
+    /**
+     * Muestra los tokens en el JTextArea indicado.
+     *
+     * @param taTokens
+     */
     public void mostrarTokens(JTextArea taTokens) {
         taTokens.setText("");
         for (Token t : tokens) {
@@ -150,6 +211,11 @@ public class AutomataFinitoDeterminista {
         }
     }
 
+    /**
+     * Muestra los errores en el JTexArea indicado.
+     *
+     * @param taErrores
+     */
     public void mostrarErrores(JTextArea taErrores) {
         taErrores.setText("");
         for (Token e : tokens) {
@@ -159,18 +225,23 @@ public class AutomataFinitoDeterminista {
         }
     }
 
+    /**
+     * Lee caracter por caracter hasta formar un token.
+     *
+     * @param taTokens
+     */
     private void obtenerToken(JTextArea taTokens) {
         boolean seguir = true;
         estadoActual = 0;
         String token = "";
         char caracter = ' ';
-        
+
         while (seguir && posicion < codigoFuente.length()) {
             if (reiniciar) {
                 numFilaT++;
-                numColumnaT=0;
+                numColumnaT = 0;
             }
-            
+
             caracter = codigoFuente.charAt(posicion);
 
             if (Character.isWhitespace(caracter)) {
@@ -191,22 +262,27 @@ public class AutomataFinitoDeterminista {
 
             posicion++;
             if (caracter == '\n') {
-                reiniciar=true;
+                reiniciar = true;
                 numFilaE++;
                 numColumnaE = 0;
             }
         }
-        
+
         if (!token.isBlank() && !tipoToken().equals(TiposToken.ERROR)) {
-            Token nuevoToken = new Token(tipoToken(), token, this.numFilaT, this.numColumnaT-1);
+            Token nuevoToken = new Token(tipoToken(), token.replace(" ", ""), this.numFilaT, this.numColumnaT - 1);
             tokens.add(nuevoToken);
             taTokens.append("------------------------------------------------\n");
         } else if (!token.isBlank() && tipoToken().equals(TiposToken.ERROR)) {
-            Token error = new Token(tipoToken(), token, numFilaE, numColumnaE);
+            Token error = new Token(tipoToken(), token.replace(" ", ""), numFilaE, numColumnaE);
             tokens.add(error);
         }
     }
 
+    /**
+     * Duevuelve el tipo de token segun el estado actual.
+     *
+     * @return El tipo del token.
+     */
     private TiposToken tipoToken() {
         TiposToken tipoToken;
         //Estados de aceptacion
