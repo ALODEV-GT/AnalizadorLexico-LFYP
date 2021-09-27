@@ -2,12 +2,15 @@ package frontend;
 
 import analizador.AutomataFinitoDeterminista;
 import analizador.Buscador;
-import analizador.CargarArchivo;
+import analizador.Archivo;
 import java.io.File;
+import java.io.FileOutputStream;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 public class Ventana extends javax.swing.JFrame {
 
+    FileOutputStream salida;
     private AutomataFinitoDeterminista afd = null;
 
     public Ventana() {
@@ -27,6 +30,7 @@ public class Ventana extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         btnVerTokens = new javax.swing.JButton();
         btnAnalizar = new javax.swing.JButton();
+        btnGuardarArchivo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         taCodigoFuente = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -65,24 +69,38 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
 
+        btnGuardarArchivo.setText("GUARDAR ARCHIVO");
+        btnGuardarArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarArchivoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnAnalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVerTokens, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(btnAnalizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnVerTokens, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnGuardarArchivo)
+                .addGap(80, 80, 80))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnAnalizar, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                .addGap(6, 6, 6)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAnalizar, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                    .addComponent(btnVerTokens, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnVerTokens, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnGuardarArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9))
         );
 
         taCodigoFuente.setColumns(20);
@@ -183,7 +201,7 @@ public class Ventana extends javax.swing.JFrame {
 
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File archivo = fileChosser.getSelectedFile();
-            CargarArchivo cargarArchivo = new CargarArchivo(archivo);
+            Archivo cargarArchivo = new Archivo(archivo);
             cargarArchivo.mostrarLineas(taCodigoFuente);
         }
     }//GEN-LAST:event_bntCargarDatosActionPerformed
@@ -209,18 +227,38 @@ public class Ventana extends javax.swing.JFrame {
 
         if (!palabraClave.isBlank() && !taCodigoFuente.getText().isBlank()) {
             Buscador buscar = new Buscador(taCodigoFuente, palabraClave);
-            try{
-            buscar.buscarCoincidencias();
-            }catch(IndexOutOfBoundsException ex){
+            try {
+                buscar.buscarCoincidencias();
+            } catch (IndexOutOfBoundsException ex) {
                 //nada por hacer
             }
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void btnGuardarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarArchivoActionPerformed
+        JFileChooser fileChosser = new JFileChooser();
+        int seleccion = fileChosser.showDialog(null, "Guardar");
+
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChosser.getSelectedFile();
+            String documento = taCodigoFuente.getText();
+            boolean guardado = new Archivo().guardarArchivo(archivo, documento);
+            if (guardado) {
+                JOptionPane.showMessageDialog(null, "Archivo guardado");
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo guardar el archivo");
+            }
+        }
+
+
+    }//GEN-LAST:event_btnGuardarArchivoActionPerformed
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bntCargarDatos;
     private javax.swing.JButton btnAnalizar;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnGuardarArchivo;
     private javax.swing.JButton btnVerTokens;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel4;
