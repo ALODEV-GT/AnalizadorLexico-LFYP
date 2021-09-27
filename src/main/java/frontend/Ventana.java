@@ -115,7 +115,7 @@ public class Ventana extends javax.swing.JFrame {
         taErrores.setRows(5);
         jScrollPane3.setViewportView(taErrores);
 
-        bntCargarDatos.setText("CARGAR DATOS");
+        bntCargarDatos.setText("CARGAR ARCHIVO");
         bntCargarDatos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntCargarDatosActionPerformed(evt);
@@ -249,8 +249,6 @@ public class Ventana extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "No se pudo guardar el archivo");
             }
         }
-
-
     }//GEN-LAST:event_btnGuardarArchivoActionPerformed
 
 

@@ -1,5 +1,9 @@
 package analizador;
 
+/**
+ * Contiene los miembros necesarios para la construcion de un token.
+ * @author midik
+ */
 public class Token {
 
     private TiposToken tipoToken;

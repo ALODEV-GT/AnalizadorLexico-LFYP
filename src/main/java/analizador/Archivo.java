@@ -7,10 +7,12 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JTextArea;
 
+/**
+ * Permite cargar archivo o guardar archivos.
+ * @author midik
+ */
 public class Archivo {
 
     private ArrayList<String> listaLineasArchivo = new ArrayList();
@@ -23,6 +25,10 @@ public class Archivo {
         
     }
 
+    /**
+     * Lista las de un archivo.
+     * @param archivo 
+     */
     private void listarLineasArchivo(File archivo) {
 
         try {
@@ -40,6 +46,10 @@ public class Archivo {
         }
     }
 
+    /**
+     * Muestra en JTextArea indicado, las lineas de un archivo.
+     * @param taCodigoFuente 
+     */
     public void mostrarLineas(JTextArea taCodigoFuente) {
         taCodigoFuente.setText("");
         for (String linea : listaLineasArchivo) {
@@ -47,6 +57,12 @@ public class Archivo {
         }
     }
     
+    /**
+     * Guarda el texto contenido en el JTexArea principal.
+     * @param archivo
+     * @param documento
+     * @return 
+     */
     public boolean guardarArchivo(File archivo, String documento){
         FileOutputStream salida;
         boolean guardado = false;

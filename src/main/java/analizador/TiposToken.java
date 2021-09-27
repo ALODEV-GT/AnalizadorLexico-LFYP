@@ -1,5 +1,9 @@
 package analizador;
 
+/**
+ * Tokens posibles en el analizador lexico.
+ * @author midik
+ */
 public enum TiposToken {
     IDENTIFICADOR("Identificador"),
     NUMERO_ENTERO("Numero entero"),
@@ -9,7 +13,7 @@ public enum TiposToken {
     SIGNO_AGRUPACION("Signo de agrupacion"),
     ERROR("Error");
 
-    private String descripcion;
+    private final String descripcion;
 
     private TiposToken(String descripcion) {
         this.descripcion = descripcion;

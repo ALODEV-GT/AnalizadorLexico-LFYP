@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.swing.JTextArea;
 
 /**
- * Determina si los tokens son validoso o invalidos, agrupandolos y permitiendo
+ * Determina si los tokens son validos o invalidos, agrupandolos y permitiendo
  * mostrarlos en una interfaz grafica.
  *
  * @author midik
@@ -17,7 +17,6 @@ public class AutomataFinitoDeterminista {
     private JTextArea taCodigoFuente;
     private int posicion = 0;
     private final ArrayList<Token> tokens = new ArrayList<>();
-    private final ArrayList<Error> errores = new ArrayList<>();
     private Set<String> tokenSinRepetir = new HashSet<>();
     private final int[][] matrizTransicion = new int[8][6];
     private int estadoActual = 0;
@@ -200,7 +199,7 @@ public class AutomataFinitoDeterminista {
     }
 
     /**
-     * Muestra los tokens en el JTextArea indicado.
+     * Muestra los tokens detectados en el JTextArea indicado.
      *
      * @param taTokens
      */
@@ -275,6 +274,7 @@ public class AutomataFinitoDeterminista {
         } else if (!token.isBlank() && tipoToken().equals(TiposToken.ERROR)) {
             Token error = new Token(tipoToken(), token.replace(" ", ""), numFilaE, numColumnaE);
             tokens.add(error);
+            taTokens.append("------------------------------------------------\n");
         }
     }
 

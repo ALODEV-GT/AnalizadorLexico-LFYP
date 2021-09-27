@@ -6,6 +6,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
+/**
+ * Permite resaltar las palabras claves que se desean buscar.
+ * @author midik
+ */
 public class Buscador {
 
     private final JTextArea taCodigoFuente;

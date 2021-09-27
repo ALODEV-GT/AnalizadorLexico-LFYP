@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"analizador","l":"Archivo"},{"p":"analizador","l":"AutomataFinitoDeterminista"},{"p":"analizador","l":"Buscador"},{"p":"test","l":"Test"},{"p":"analizador","l":"TiposToken"},{"p":"analizador","l":"Token"},{"p":"frontend","l":"Ventana"},{"p":"frontend","l":"VentanaToken"}]
